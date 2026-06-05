@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#164c45" />
+    <title>RACH Visit</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">RACH relationship visit</p>
+          <h1>Site visit record</h1>
+        </div>
+        <div class="status-stack">
+          <span class="status-pill" id="network-status">Offline-ready</span>
+          <span class="status-pill status-pill--auth" id="auth-status">Checking sign-in</span>
+        </div>
+      </header>
+
+      <main>
+        <section class="workspace">
+          <aside class="rail" aria-label="Visit sections">
+            <button class="rail__item is-active" type="button" data-panel-target="setup">
+              <span>Visit</span>
+              <strong id="setup-count">0/5</strong>
+            </button>
+            <button class="rail__item" type="button" data-panel-target="agenda">
+              <span>Agenda</span>
+              <strong id="agenda-count">0/8</strong>
+            </button>
+            <button class="rail__item" type="button" data-panel-target="notes">
+              <span>Notes</span>
+              <strong id="notes-count">0/13</strong>
+            </button>
+            <button class="rail__item" type="button" data-panel-target="recording">
+              <span>Voice</span>
+              <strong id="voice-count">0</strong>
+            </button>
+            <button class="rail__item" type="button" data-panel-target="publish">
+              <span>Publish</span>
+              <strong id="publish-state">Draft</strong>
+            </button>
+          </aside>
+
+          <div class="panels">
+            <section class="panel is-active" id="panel-setup" data-panel="setup">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Visit setup</p>
+                  <h2>Core details</h2>
+                </div>
+                <button class="icon-button" type="button" id="new-visit" aria-label="New visit">
+                  +
+                </button>
+              </div>
+
+              <div class="grid grid--two">
+                <label class="field">
+                  <span>Facility name</span>
+                  <input autocomplete="organization" name="facilityName" type="text" />
+                </label>
+                <label class="field">
+                  <span>Visit date</span>
+                  <input name="visitDate" type="date" />
+                </label>
+                <label class="field">
+                  <span>Relationship manager</span>
+                  <input autocomplete="name" name="authorName" type="text" />
+                </label>
+                <label class="field">
+                  <span>Primary contact</span>
+                  <input autocomplete="name" name="primaryContact" type="text" />
+                </label>
+                <label class="field field--wide">
+                  <span>HubSpot company record ID</span>
+                  <input inputmode="numeric" name="hubspotCompanyId" type="text" />
+                </label>
+              </div>
+            </section>
+
+            <section class="panel" id="panel-agenda" data-panel="agenda">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Agenda</p>
+                  <h2>Talking points</h2>
+                </div>
+                <div class="meter" aria-label="Agenda completion">
+                  <span id="agenda-meter"></span>
+                </div>
+              </div>
+
+              <div class="agenda-list">
+                <label class="check-row">
+                  <input name="agendaConnection" type="checkbox" data-progress-group="agenda" />
+                  <span>
+                    <strong>Reconnect and acknowledge recent wins</strong>
+                    <small>How things are going, successes, leadership or staffing changes.</small>
+                  </span>
+                </label>
+                <label class="check-row">
+                  <input name="agendaPriorities" type="checkbox" data-progress-group="agenda" />
+                  <span>
+                    <strong>Current priorities and challenges</strong>
+                    <small>What is working, what is difficult, and where HNC can support.</small>
+                  </span>
+                </label>
+                <label class="check-row">
+                  <input name="agendaPrograms" type="checkbox" data-progress-group="agenda" />
+                  <span>
+                    <strong>Program engagement and feedback</strong>
+                    <small>Use of HNC supports, reasons for non-engagement, communications reach.</small>
+                  </span>
+                </label>
+                <label class="check-row">
+                  <input name="agendaEpca" type="checkbox" data-progress-group="agenda" />
+                  <span>
+                    <strong>EPCA grant opportunities</strong>
+                    <small>Local solutions, thin markets, capacity building, co-design, sustainability.</small>
+                  </span>
+                </label>
+                <label class="check-row">
+                  <input name="agendaNurseCapacity" type="checkbox" data-progress-group="agenda" />
+                  <span>
+                    <strong>Nurse capacity education modules</strong>
+                    <small>DRTT, advance care planning, palliative care, My Health Record.</small>
+                  </span>
+                </label>
+                <label class="check-row">
+                  <input name="agendaTelehealth" type="checkbox" data-progress-group="agenda" />
+                  <span>
+                    <strong>Telehealth and Visionflex status</strong>
+                    <small>Training links, resources, ACOS rollout readiness, support needs.</small>
+                  </span>
+                </label>
+                <label class="check-row">
+                  <input name="agendaDrtt" type="checkbox" data-progress-group="agenda" />
+                  <span>
+                    <strong>DRTT and after-hours planning</strong>
+                    <small>Functionality, flow, advance care plans, directives, escalation pathways.</small>
+                  </span>
+                </label>
+                <label class="field">
+                  <span>Agenda notes</span>
+                  <textarea name="agendaNotes" rows="5" data-progress-group="agenda"></textarea>
+                </label>
+              </div>
+            </section>
+
+            <section class="panel" id="panel-notes" data-panel="notes">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Digital form</p>
+                  <h2>Visit notes</h2>
+                </div>
+                <button class="quiet-button" type="button" id="copy-transcript">Append transcript</button>
+              </div>
+
+              <div class="form-stack" id="notes-fields"></div>
+            </section>
+
+            <section class="panel" id="panel-recording" data-panel="recording">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Voice capture</p>
+                  <h2>Conversation transcript</h2>
+                </div>
+                <span class="recording-clock" id="recording-clock">00:00</span>
+              </div>
+
+              <div class="recorder">
+                <div class="recorder__controls">
+                  <button class="record-button" type="button" id="record-toggle">Start recording</button>
+                  <button class="quiet-button" type="button" id="transcribe-audio" disabled>
+                    Transcribe
+                  </button>
+                </div>
+                <audio id="audio-playback" controls></audio>
+                <label class="field">
+                  <span>Transcript</span>
+                  <textarea name="transcript" id="transcript" rows="10"></textarea>
+                </label>
+              </div>
+            </section>
+
+            <section class="panel" id="panel-publish" data-panel="publish">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">HubSpot publishing</p>
+                  <h2>Review and publish</h2>
+                </div>
+                <button class="quiet-button" type="button" id="preview-note">Refresh preview</button>
+              </div>
+
+              <div class="publish-grid">
+                <div class="publish-preview" id="publish-preview" aria-live="polite"></div>
+                <div class="publish-actions">
+                  <button class="primary-button" type="button" id="publish-note">Publish note</button>
+                  <button class="secondary-button" type="button" id="export-json">Export JSON</button>
+                  <button class="danger-button" type="button" id="clear-draft">Clear local draft</button>
+                  <p class="muted" id="publish-feedback"></p>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <template id="note-field-template">
+      <label class="field">
+        <span></span>
+        <textarea rows="4" data-progress-group="notes"></textarea>
+      </label>
+    </template>
+
+    <template id="toast-template">
+      <div class="toast" role="status" aria-live="polite"></div>
+    </template>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>

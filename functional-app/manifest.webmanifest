@@ -1,0 +1,19 @@
+{
+  "name": "RACH Site Visit",
+  "short_name": "RACH Visit",
+  "description": "Offline-first site visit notes, voice transcription, and HubSpot publishing.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f2ed",
+  "theme_color": "#164c45",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

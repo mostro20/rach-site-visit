@@ -34,3 +34,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local reference materials
+/requirements/*
+codex.md
+/functional-app/api/local.settings.example.json

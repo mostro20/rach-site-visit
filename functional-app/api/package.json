@@ -1,0 +1,14 @@
+{
+  "name": "rach-site-visit-functions",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "func start",
+    "test": "node --check src/functions/transcribe.js && node --check src/functions/publishHubSpot.js && node --check src/shared/auth.js"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.7.2"
+  },
+  "devDependencies": {}
+}

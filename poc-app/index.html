@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f5f4c" />
+    <title>RACH Visit Capture</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div class="hero__topline">
+          <span class="badge badge--live">Demo POC</span>
+          <span class="badge" id="sync-status">Offline-ready draft</span>
+        </div>
+        <div class="hero__content">
+          <p class="eyebrow">Residential Aged Care Home support</p>
+          <h1>Capture the visit while the conversation is happening.</h1>
+          <p class="hero__lede">
+            A mobile-first workflow for check-ins, agenda prompts, structured notes, and future
+            media capture in low-connectivity environments.
+          </p>
+        </div>
+        <div class="hero__stats">
+          <article class="stat-card">
+            <span class="stat-card__label">Sections</span>
+            <strong>3 active</strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-card__label">Draft mode</span>
+            <strong>Saved locally</strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-card__label">Next phase</span>
+            <strong>Media + CRM</strong>
+          </article>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="panel progress-panel">
+          <div>
+            <p class="eyebrow">Visit progress</p>
+            <h2>Keep the conversation moving without losing detail.</h2>
+          </div>
+          <div class="progress-panel__meta">
+            <span id="completion-copy">0% complete</span>
+            <button class="ghost-button" type="button" id="clear-draft">Clear draft</button>
+          </div>
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-bar__fill" id="progress-fill"></div>
+          </div>
+        </section>
+
+        <section class="panel visit-summary">
+          <div class="panel__heading">
+            <div>
+              <p class="eyebrow">Visit setup</p>
+              <h2>Start with the basics</h2>
+            </div>
+          </div>
+          <div class="grid grid--two">
+            <label class="field">
+              <span>Facility name</span>
+              <input type="text" name="facilityName" placeholder="eg. Coastal Gardens" />
+            </label>
+            <label class="field">
+              <span>Visit date</span>
+              <input type="date" name="visitDate" />
+            </label>
+            <label class="field">
+              <span>Relationship manager</span>
+              <input type="text" name="staffMember" placeholder="Your name" />
+            </label>
+            <label class="field">
+              <span>Primary contact</span>
+              <input type="text" name="primaryContact" placeholder="Clinical lead / manager" />
+            </label>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel__heading">
+            <div>
+              <p class="eyebrow">Agenda component</p>
+              <h2>Guided talking points</h2>
+            </div>
+            <p class="panel__intro">
+              Turn the agenda into a checklist so staff can steer the meeting and capture notes as
+              they go.
+            </p>
+          </div>
+
+          <div class="agenda-section">
+            <div class="agenda-section__header">
+              <h3>Purpose and positioning</h3>
+              <span class="section-chip">Open the conversation</span>
+            </div>
+            <div class="agenda-copy">
+              <p>
+                Build stronger connections with Residential Aged Care Homes, understand what is
+                working, surface challenges, and support better care through collaboration.
+              </p>
+              <div class="pill-row">
+                <span class="pill">Improve access to GPs and allied health</span>
+                <span class="pill">Reduce unnecessary hospital transfers</span>
+                <span class="pill">Strengthen dementia care pathways</span>
+                <span class="pill">Identify needs early</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="agenda-section">
+            <div class="agenda-section__header">
+              <h3>Support and opportunities</h3>
+              <span class="section-chip">Prompt for relevance</span>
+            </div>
+            <div class="checklist">
+              <label class="check-card">
+                <input type="checkbox" data-track="progress" name="agenda_epca" />
+                <span>
+                  <strong>EPCA grants</strong>
+                  <small>Raised grant opportunities, local thin-market solutions, and EOI timing.</small>
+                </span>
+              </label>
+              <label class="check-card">
+                <input type="checkbox" data-track="progress" name="agenda_nurse_capacity" />
+                <span>
+                  <strong>Nurse capacity modules</strong>
+                  <small>Discussed flexible training, coaching circles, and HealthPathways access.</small>
+                </span>
+              </label>
+              <label class="check-card">
+                <input type="checkbox" data-track="progress" name="agenda_telehealth" />
+                <span>
+                  <strong>Telehealth + ACOS rollout</strong>
+                  <small>Covered Visionflex status, support options, and current rollout readiness.</small>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="agenda-section">
+            <div class="agenda-section__header">
+              <h3>Visit checklist</h3>
+              <span class="section-chip">Track conversation</span>
+            </div>
+            <div class="stacked-fields">
+              <label class="check-card">
+                <input type="checkbox" data-track="progress" name="checkin_complete" />
+                <span>
+                  <strong>Check-in completed</strong>
+                  <small>Reconnected, asked how things are going, and acknowledged recent successes.</small>
+                </span>
+              </label>
+              <label class="check-card">
+                <input type="checkbox" data-track="progress" name="staff_changes_complete" />
+                <span>
+                  <strong>Leadership / staffing changes reviewed</strong>
+                  <small>Confirmed clinical and education leads, plus any role changes.</small>
+                </span>
+              </label>
+              <label class="check-card">
+                <input type="checkbox" data-track="progress" name="priorities_complete" />
+                <span>
+                  <strong>Current priorities and challenges captured</strong>
+                  <small>Explored what is working, what is difficult, and where support is needed.</small>
+                </span>
+              </label>
+              <label class="check-card">
+                <input type="checkbox" data-track="progress" name="program_feedback_complete" />
+                <span>
+                  <strong>Program engagement feedback discussed</strong>
+                  <small>Checked program usage, communication reach, and cross-sector suggestions.</small>
+                </span>
+              </label>
+              <label class="check-card">
+                <input type="checkbox" data-track="progress" name="drtt_complete" />
+                <span>
+                  <strong>DRTT and after-hours planning discussed</strong>
+                  <small>Reviewed tool usage, flow feedback, ACPs, directives, and escalation plans.</small>
+                </span>
+              </label>
+              <label class="field">
+                <span>Agenda notes</span>
+                <textarea
+                  name="agendaNotes"
+                  rows="6"
+                  placeholder="Capture highlights, risks, ideas for collaboration, or follow-up actions."
+                ></textarea>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel__heading">
+            <div>
+              <p class="eyebrow">Digital form</p>
+              <h2>Structured capture from the checklist document</h2>
+            </div>
+            <p class="panel__intro">
+              Each item mirrors the capture form so data can later map into a CRM or local
+              database.
+            </p>
+          </div>
+
+          <form id="capture-form" class="stacked-fields">
+            <label class="field">
+              <span>Successes or initiatives to acknowledge</span>
+              <textarea
+                name="successes"
+                rows="4"
+                placeholder="What has gone well since the last touchpoint?"
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>Staff or leadership changes</span>
+              <textarea
+                name="staffChanges"
+                rows="4"
+                placeholder="Who has changed, and who is the current clinical / education lead?"
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>Current priorities</span>
+              <textarea
+                name="currentPriorities"
+                rows="4"
+                placeholder="What matters most to the home right now?"
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>What is working well?</span>
+              <textarea
+                name="workingWell"
+                rows="4"
+                placeholder="Capture strengths, effective initiatives, or local wins."
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>Challenges</span>
+              <textarea
+                name="challenges"
+                rows="4"
+                placeholder="Document operational, workforce, care, or access barriers."
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>Support requested from HNC</span>
+              <textarea
+                name="supportNeeded"
+                rows="4"
+                placeholder="What do they need from us, and how can we help?"
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>Training and education needs</span>
+              <textarea
+                name="trainingNeeds"
+                rows="4"
+                placeholder="Highlight education gaps, collaboration opportunities, or capability-building needs."
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>Current use of HNC programs or supports</span>
+              <textarea
+                name="programUsage"
+                rows="4"
+                placeholder="Which programs are being used, and how are they landing?"
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>If not engaging, what are the reasons?</span>
+              <textarea
+                name="nonEngagementReasons"
+                rows="4"
+                placeholder="Surface blockers to adoption or participation."
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>Cross-sector meeting suggestions</span>
+              <textarea
+                name="crossSectorSuggestions"
+                rows="4"
+                placeholder="Ideas for better engagement, coordination, or meeting topics."
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>Communications reach</span>
+              <textarea
+                name="communications"
+                rows="3"
+                placeholder="Are emails, newsletters, and updates reaching the right people?"
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>DRTT functionality feedback</span>
+              <textarea
+                name="drttFeedback"
+                rows="4"
+                placeholder="Are they using the tool? What feedback do they have about flow and usability?"
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>After-hours plan / advance care planning notes</span>
+              <textarea
+                name="afterHoursPlan"
+                rows="4"
+                placeholder="Document ACP status, directives, or after-hours escalation arrangements."
+                data-track="progress"
+              ></textarea>
+            </label>
+            <label class="field">
+              <span>MNC ACOS rollout notes</span>
+              <textarea
+                name="acosRollout"
+                rows="4"
+                placeholder="Capture onboarding status, readiness, and any support needs."
+                data-track="progress"
+              ></textarea>
+            </label>
+          </form>
+        </section>
+
+        <section class="panel future-panel">
+          <div class="panel__heading">
+            <div>
+              <p class="eyebrow">Future capability</p>
+              <h2>Visible roadmap without building the backend yet</h2>
+            </div>
+          </div>
+          <div class="future-grid">
+            <article class="future-card">
+              <span class="future-card__icon">01</span>
+              <h3>Photo capture</h3>
+              <p>Attach a room setup, poster, or whiteboard snapshot to a visit record.</p>
+              <button class="ghost-button" type="button" disabled>Coming later</button>
+            </article>
+            <article class="future-card">
+              <span class="future-card__icon">02</span>
+              <h3>Voice memo</h3>
+              <p>Record a short observation when typing would slow down the conversation.</p>
+              <button class="ghost-button" type="button" disabled>Coming later</button>
+            </article>
+            <article class="future-card">
+              <span class="future-card__icon">03</span>
+              <h3>HubSpot publishing</h3>
+              <p>Map structured notes into a CRM record once connectivity and review are available.</p>
+              <button class="ghost-button" type="button" disabled>Future integration</button>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="sticky-footer">
+        <button class="secondary-button" type="button" id="download-json">Export JSON</button>
+        <button class="primary-button" type="button" id="save-draft">Save draft</button>
+      </footer>
+    </div>
+
+    <template id="toast-template">
+      <div class="toast" role="status" aria-live="polite"></div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
