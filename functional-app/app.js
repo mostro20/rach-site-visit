@@ -1,24 +1,9 @@
+import { formConfig } from "./form-config.js";
+
 const DB_NAME = "rach-visit-v2";
 const DB_VERSION = 1;
 const VISIT_STORE = "visits";
 const ACTIVE_VISIT_ID = "active";
-
-const noteFields = [
-  ["successes", "Successes or initiatives to acknowledge"],
-  ["staffChanges", "Staff or leadership changes"],
-  ["currentPriorities", "Current priorities"],
-  ["workingWell", "What is working well?"],
-  ["challenges", "Challenges"],
-  ["supportNeeded", "Support requested from HNC"],
-  ["trainingNeeds", "Training and education needs"],
-  ["programUsage", "Current use of HNC programs or supports"],
-  ["nonEngagementReasons", "If not engaging, what are the reasons?"],
-  ["crossSectorSuggestions", "Cross-sector meeting suggestions"],
-  ["communications", "Communications reach"],
-  ["drttFeedback", "DRTT functionality feedback"],
-  ["afterHoursPlan", "After-hours plan / advance care planning notes"],
-  ["acosRollout", "MNC ACOS rollout notes"],
-];
 
 const state = {
   db: null,
@@ -61,16 +46,46 @@ function dbGet(id) {
   });
 }
 
-function buildNoteFields() {
+function buildFormFields() {
+  $("#agenda-eyebrow").textContent = formConfig.agenda.eyebrow;
+  $("#agenda-heading").textContent = formConfig.agenda.heading;
+  $("#notes-eyebrow").textContent = formConfig.notes.eyebrow;
+  $("#notes-heading").textContent = formConfig.notes.heading;
+
+  const agendaHost = $("#agenda-fields");
+  const agendaTemplate = $("#agenda-item-template");
+  for (const item of formConfig.agenda.items) {
+    const field = agendaTemplate.content.firstElementChild.cloneNode(true);
+    const input = field.querySelector("input");
+    input.name = item.name;
+    field.querySelector("strong").textContent = item.heading;
+    field.querySelector("small").textContent = item.description;
+    agendaHost.appendChild(field);
+  }
+
+  const agendaNotes = $("#note-field-template").content.firstElementChild.cloneNode(true);
+  agendaNotes.querySelector("span").textContent = formConfig.agenda.notes.label;
+  const agendaTextarea = agendaNotes.querySelector("textarea");
+  agendaTextarea.name = formConfig.agenda.notes.name;
+  agendaTextarea.rows = formConfig.agenda.notes.rows;
+  agendaTextarea.dataset.progressGroup = "agenda";
+  agendaHost.appendChild(agendaNotes);
+
   const host = $("#notes-fields");
   const template = $("#note-field-template");
+  const destination = $("#transcript-destination");
 
-  for (const [name, label] of noteFields) {
+  for (const { name, label } of formConfig.notes.fields) {
     const field = template.content.firstElementChild.cloneNode(true);
     field.querySelector("span").textContent = label;
     const textarea = field.querySelector("textarea");
     textarea.name = name;
     host.appendChild(field);
+
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = label;
+    destination.appendChild(option);
   }
 }
 
@@ -151,7 +166,7 @@ function updateProgress() {
   $("#agenda-count").textContent = `${agendaDone}/${agendaItems.length}`;
   $("#notes-count").textContent = `${notesDone}/${notesItems.length}`;
   $("#voice-count").textContent = document.querySelector("[name='transcript']").value.trim() ? "1" : "0";
-  $("#agenda-meter").style.width = `${Math.round((agendaDone / agendaItems.length) * 100)}%`;
+  $("#agenda-meter").style.width = `${agendaItems.length ? Math.round((agendaDone / agendaItems.length) * 100) : 0}%`;
   $("#publish-state").textContent = $("#publish-feedback").textContent ? "Sent" : "Draft";
 }
 
@@ -244,19 +259,27 @@ async function transcribeAudio() {
   }
 }
 
-function appendTranscriptToNotes() {
+async function sendTranscriptToNotes() {
   const transcript = $("#transcript").value.trim();
-  const agendaNotes = document.querySelector("[name='agendaNotes']");
   if (!transcript) return showToast("No transcript to copy");
-  agendaNotes.value = [agendaNotes.value.trim(), transcript].filter(Boolean).join("\n\n");
-  saveDraft(true);
+
+  const destinationName = $("#transcript-destination").value;
+  const destination = document.querySelector(`[name='${destinationName}']`);
+  if (!destination) return showToast("Choose a notes field");
+
+  destination.value = [destination.value.trim(), transcript].filter(Boolean).join("\n\n");
+  await saveDraft();
+  switchPanel("notes");
+  destination.focus();
+  destination.scrollIntoView({ behavior: "smooth", block: "center" });
+  showToast(`Transcript sent to ${formConfig.notes.fields.find((field) => field.name === destinationName)?.label || "notes"}`);
 }
 
 function buildHubSpotHtml() {
   const visit = getVisitData();
   const sections = [
-    ["Agenda notes", visit.agendaNotes],
-    ...noteFields.map(([name, label]) => [label, visit[name]]),
+    [formConfig.agenda.notes.label, visit[formConfig.agenda.notes.name]],
+    ...formConfig.notes.fields.map(({ name, label }) => [label, visit[name]]),
     ["Transcript", visit.transcript],
   ];
 
@@ -353,7 +376,7 @@ function showToast(message) {
 }
 
 async function init() {
-  buildNoteFields();
+  buildFormFields();
   state.db = await openDb();
   await loadDraft();
   await checkAuth();
@@ -375,7 +398,7 @@ async function init() {
   $("#export-json").addEventListener("click", exportJson);
   $("#preview-note").addEventListener("click", updatePreview);
   $("#publish-note").addEventListener("click", publishNote);
-  $("#copy-transcript").addEventListener("click", appendTranscriptToNotes);
+  $("#send-transcript").addEventListener("click", sendTranscriptToNotes);
   $("#record-toggle").addEventListener("click", () => {
     if (state.mediaRecorder?.state === "recording") stopRecording();
     else startRecording().catch((error) => showToast(error.message));
