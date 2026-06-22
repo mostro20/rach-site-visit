@@ -2,6 +2,12 @@
 
 Static mobile PWA with local drafts, voice recording, OpenAI transcription, and secure HubSpot note publishing through Azure Functions.
 
+## Form configuration
+
+Edit `form-config.js` to change the Agenda heading and checklist items or the Notes heading and fields. Labels and descriptions can be changed freely. Keep an existing field's `name` unchanged so drafts already saved on a device continue to load into the same field.
+
+The transcript destination menu is generated from the Notes fields in this configuration. Sending a transcript appends it to the selected field and opens that field on the Notes page.
+
 ## Security model
 
 Host the static app with Azure Static Web Apps or App Service Authentication using Microsoft Entra ID. Browser clients call only `/api/transcribe` and `/api/publish-hubspot`; OpenAI and HubSpot secrets stay in Azure Function app settings.

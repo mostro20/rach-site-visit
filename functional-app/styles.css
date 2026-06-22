@@ -29,7 +29,8 @@ body {
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -194,7 +195,8 @@ button:disabled {
 }
 
 .field input,
-.field textarea {
+.field textarea,
+.field select {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -205,7 +207,8 @@ button:disabled {
 }
 
 .field input:focus,
-.field textarea:focus {
+.field textarea:focus,
+.field select:focus {
   outline: 3px solid rgba(39, 116, 102, 0.18);
   border-color: rgba(39, 116, 102, 0.58);
 }
@@ -316,6 +319,13 @@ button:disabled {
   gap: 10px;
 }
 
+.transcript-send {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+}
+
 audio {
   width: 100%;
 }
@@ -406,6 +416,10 @@ audio {
   }
 
   .recorder__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .transcript-send {
     grid-template-columns: 1fr;
   }
 }

@@ -30,11 +30,11 @@
             </button>
             <button class="rail__item" type="button" data-panel-target="agenda">
               <span>Agenda</span>
-              <strong id="agenda-count">0/8</strong>
+              <strong id="agenda-count">0/0</strong>
             </button>
             <button class="rail__item" type="button" data-panel-target="notes">
               <span>Notes</span>
-              <strong id="notes-count">0/13</strong>
+              <strong id="notes-count">0/0</strong>
             </button>
             <button class="rail__item" type="button" data-panel-target="recording">
               <span>Voice</span>
@@ -85,78 +85,23 @@
             <section class="panel" id="panel-agenda" data-panel="agenda">
               <div class="section-heading">
                 <div>
-                  <p class="eyebrow">Agenda</p>
-                  <h2>Talking points</h2>
+                  <p class="eyebrow" id="agenda-eyebrow"></p>
+                  <h2 id="agenda-heading"></h2>
                 </div>
                 <div class="meter" aria-label="Agenda completion">
                   <span id="agenda-meter"></span>
                 </div>
               </div>
 
-              <div class="agenda-list">
-                <label class="check-row">
-                  <input name="agendaConnection" type="checkbox" data-progress-group="agenda" />
-                  <span>
-                    <strong>Reconnect and acknowledge recent wins</strong>
-                    <small>How things are going, successes, leadership or staffing changes.</small>
-                  </span>
-                </label>
-                <label class="check-row">
-                  <input name="agendaPriorities" type="checkbox" data-progress-group="agenda" />
-                  <span>
-                    <strong>Current priorities and challenges</strong>
-                    <small>What is working, what is difficult, and where HNC can support.</small>
-                  </span>
-                </label>
-                <label class="check-row">
-                  <input name="agendaPrograms" type="checkbox" data-progress-group="agenda" />
-                  <span>
-                    <strong>Program engagement and feedback</strong>
-                    <small>Use of HNC supports, reasons for non-engagement, communications reach.</small>
-                  </span>
-                </label>
-                <label class="check-row">
-                  <input name="agendaEpca" type="checkbox" data-progress-group="agenda" />
-                  <span>
-                    <strong>EPCA grant opportunities</strong>
-                    <small>Local solutions, thin markets, capacity building, co-design, sustainability.</small>
-                  </span>
-                </label>
-                <label class="check-row">
-                  <input name="agendaNurseCapacity" type="checkbox" data-progress-group="agenda" />
-                  <span>
-                    <strong>Nurse capacity education modules</strong>
-                    <small>DRTT, advance care planning, palliative care, My Health Record.</small>
-                  </span>
-                </label>
-                <label class="check-row">
-                  <input name="agendaTelehealth" type="checkbox" data-progress-group="agenda" />
-                  <span>
-                    <strong>Telehealth and Visionflex status</strong>
-                    <small>Training links, resources, ACOS rollout readiness, support needs.</small>
-                  </span>
-                </label>
-                <label class="check-row">
-                  <input name="agendaDrtt" type="checkbox" data-progress-group="agenda" />
-                  <span>
-                    <strong>DRTT and after-hours planning</strong>
-                    <small>Functionality, flow, advance care plans, directives, escalation pathways.</small>
-                  </span>
-                </label>
-                <label class="field">
-                  <span>Agenda notes</span>
-                  <textarea name="agendaNotes" rows="5" data-progress-group="agenda"></textarea>
-                </label>
-              </div>
+              <div class="agenda-list" id="agenda-fields"></div>
             </section>
 
             <section class="panel" id="panel-notes" data-panel="notes">
               <div class="section-heading">
                 <div>
-                  <p class="eyebrow">Digital form</p>
-                  <h2>Visit notes</h2>
+                  <p class="eyebrow" id="notes-eyebrow"></p>
+                  <h2 id="notes-heading"></h2>
                 </div>
-                <button class="quiet-button" type="button" id="copy-transcript">Append transcript</button>
               </div>
 
               <div class="form-stack" id="notes-fields"></div>
@@ -183,6 +128,13 @@
                   <span>Transcript</span>
                   <textarea name="transcript" id="transcript" rows="10"></textarea>
                 </label>
+                <div class="transcript-send">
+                  <label class="field">
+                    <span>Send transcript to</span>
+                    <select id="transcript-destination"></select>
+                  </label>
+                  <button class="secondary-button" type="button" id="send-transcript">Send to notes</button>
+                </div>
               </div>
             </section>
 
@@ -214,6 +166,16 @@
       <label class="field">
         <span></span>
         <textarea rows="4" data-progress-group="notes"></textarea>
+      </label>
+    </template>
+
+    <template id="agenda-item-template">
+      <label class="check-row">
+        <input type="checkbox" data-progress-group="agenda" />
+        <span>
+          <strong></strong>
+          <small></small>
+        </span>
       </label>
     </template>
 
